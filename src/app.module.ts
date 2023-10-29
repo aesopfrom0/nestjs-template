@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validateSchema } from './configs/validate-schema';
+import { DatabaseModule } from './providers/database/database.module';
 import configuration from './configs/configuration';
 
 @Module({
@@ -15,6 +16,7 @@ import configuration from './configs/configuration';
         abortEarly: true,
       },
     }),
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
