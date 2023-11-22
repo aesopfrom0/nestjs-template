@@ -5,7 +5,7 @@ import ProcessLock from './shared/utils/process-lock.util';
 @Injectable()
 export class AppService extends BaseService implements OnModuleDestroy {
   getHello(): string {
-    this.logger.log('dasfdsafsfdas', this.getHello.name)
+    this.logger.log('dasfdsafsfdas', this.getHello.name);
     return 'Hello World!';
   }
 

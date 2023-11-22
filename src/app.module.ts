@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validateSchema } from './configs/validate-schema';
 import { DatabaseModule } from './providers/database/database.module';
 import configuration from './configs/configuration';
+import TrackRequestMiddleware from './providers/middlewares/track-request-middleware.middleware';
+import { ShutdownModule } from './providers/shutdown/shutdown.module';
 
 @Module({
   imports: [
@@ -17,8 +19,13 @@ import configuration from './configs/configuration';
       },
     }),
     DatabaseModule,
+    ShutdownModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TrackRequestMiddleware).exclude('health').forRoutes('*');
+  }
+}

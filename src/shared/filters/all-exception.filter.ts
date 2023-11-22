@@ -13,7 +13,6 @@ import { BaseExceptionFilter } from '@nestjs/core';
 import { randomUUID } from 'crypto';
 import { ErrorCode } from '../exceptions/error-code';
 
-
 @Catch()
 export class AllExceptionsFilter<T> extends BaseExceptionFilter implements ExceptionFilter {
   public catch(exception: T, host: ArgumentsHost) {
@@ -23,7 +22,8 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
     const { ip, method, body, path } = request;
     //X-forwarded-for에 ip를 기입하면 요청 ip를 변조할 수 있음, 클라우드플레어에서 제공하는 헤더를 사용해서 판별함
     const originIp = request.headers['cf-connecting-ip'] ?? ip;
-    const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     const trackingEventId = randomUUID();
     const logger = new Logger(AllExceptionsFilter.name);
 
@@ -50,4 +50,3 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
     logger.error(`${method} ${path} ${originIp} ${JSON.stringify(body)}\nError : ${message}`);
   }
 }
-
