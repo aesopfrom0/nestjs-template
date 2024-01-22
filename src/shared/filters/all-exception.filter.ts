@@ -24,7 +24,6 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
     const originIp = request.headers['cf-connecting-ip'] ?? ip;
     const status =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-    const trackingEventId = randomUUID();
     const logger = new Logger(AllExceptionsFilter.name);
 
     let errorCode = ErrorCode.UNKNOWN_ERROR;
@@ -39,14 +38,24 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
       }
     }
 
-    if (exception instanceof ForbiddenException) {
-      response.status(status).json({
-        message: exception.toString(),
-        errorCode: ErrorCode.AUTH_NOT_FOUND,
+    const applicationError: { httpError: HttpException; errorCode: number } = JSON.parse(
+      exception['message'],
+    );
+
+    response.status(status).json({
+      error: {
+        message: applicationError.httpError.message,
+        errorCode: applicationError.errorCode,
         timestamp: Date.now(),
-        trackingEventId,
-      });
-    }
+        trackingEventId: request.headers['request-id'],
+      },
+      meta: {
+        responseCode: applicationError.errorCode,
+        message: applicationError.httpError.message,
+        timestamp: Date.now(),
+      },
+    });
+
     logger.error(`${method} ${path} ${originIp} ${JSON.stringify(body)}\nError : ${message}`);
   }
 }

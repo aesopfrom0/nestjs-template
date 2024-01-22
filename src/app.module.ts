@@ -7,6 +7,8 @@ import { DatabaseModule } from './providers/database/database.module';
 import configuration from './configs/configuration';
 import TrackRequestMiddleware from './providers/middlewares/track-request-middleware.middleware';
 import { ShutdownModule } from './providers/shutdown/shutdown.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from '@project-name/shared/filters/all-exception.filter';
 
 @Module({
   imports: [
@@ -22,7 +24,13 @@ import { ShutdownModule } from './providers/shutdown/shutdown.module';
     ShutdownModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
