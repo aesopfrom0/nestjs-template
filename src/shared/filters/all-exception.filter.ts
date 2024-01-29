@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { ErrorCode } from '../exceptions/error-code';
+import ApplicationException from '@project-name/shared/exceptions/application.exception';
 
 @Catch()
 export class AllExceptionsFilter<T> extends BaseExceptionFilter implements ExceptionFilter {
@@ -34,23 +35,25 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
       }
     }
 
-    const applicationError: { httpError: HttpException; errorCode: number } = JSON.parse(
-      exception['message'],
-    );
+    if (exception instanceof ApplicationException) {
+      const applicationError: { httpError: HttpException; errorCode: number } = JSON.parse(
+        exception['message'],
+      );
 
-    response.status(status).json({
-      error: {
-        message: applicationError.httpError.message,
-        errorCode: applicationError.errorCode,
-        timestamp: Date.now(),
-        trackingEventId: request.headers['request-id'],
-      },
-      meta: {
-        responseCode: applicationError.errorCode,
-        message: applicationError.httpError.message,
-        timestamp: Date.now(),
-      },
-    });
+      response.status(status).json({
+        error: {
+          message: applicationError.httpError.message,
+          errorCode: applicationError.errorCode,
+          timestamp: Date.now(),
+          trackingEventId: request.headers['request-id'],
+        },
+        meta: {
+          responseCode: applicationError.errorCode,
+          message: applicationError.httpError.message,
+          timestamp: Date.now(),
+        },
+      });
+    }
 
     logger.error(`${method} ${path} ${originIp} ${JSON.stringify(body)}\nError : ${message}`);
   }
