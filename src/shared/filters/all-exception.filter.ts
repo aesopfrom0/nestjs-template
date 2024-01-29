@@ -1,16 +1,12 @@
 import {
   ArgumentsHost,
-  BadRequestException,
   Catch,
   ExceptionFilter,
-  ForbiddenException,
   HttpException,
   HttpStatus,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { randomUUID } from 'crypto';
 import { ErrorCode } from '../exceptions/error-code';
 
 @Catch()
