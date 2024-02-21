@@ -1,4 +1,4 @@
 export default () => ({
-  env: process.env.NODE_ENV,
+  environment: process.env.NODE_ENV,
   port: +process.env.PORT,
 });
