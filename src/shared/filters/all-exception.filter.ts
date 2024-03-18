@@ -53,6 +53,20 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
           timestamp: Date.now(),
         },
       });
+    } else {
+      response.status(status).json({
+        error: {
+          message,
+          errorCode,
+          timestamp: Date.now(),
+          trackingEventId: request.headers['request-id'],
+        },
+        meta: {
+          responseCode: errorCode,
+          message,
+          timestamp: Date.now(),
+        },
+      });
     }
 
     logger.error(`${method} ${path} ${originIp} ${JSON.stringify(body)}\nError : ${message}`);

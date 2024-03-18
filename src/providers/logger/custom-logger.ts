@@ -7,12 +7,12 @@ export class CustomLogger extends Logger {
   }
 
   error(message: any, trace?: string, context?: string) {
-    const customMessage = `[${this.#functionName()}] ${message}`;
+    const customMessage = `[${this.#functionName()}] ${message}, ${context}`;
     super.error(customMessage, trace);
   }
 
   debug(message: any, context?: string) {
-    const customMessage = `[${this.#functionName()}] ${message}`;
+    const customMessage = `[${this.#functionName()}] ${message}, ${context}`;
     super.debug(customMessage);
   }
 
