@@ -13,7 +13,7 @@ import { AllExceptionsFilter } from '@project-name/shared/filters/all-exception.
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`${__dirname}/configs/env/.${process.env.NODE_ENV}.env`],
+      envFilePath: [`${__dirname}/configs/env/.env.${process.env.NODE_ENV}`],
       load: [configuration],
       validationSchema: validateSchema(),
       validationOptions: {

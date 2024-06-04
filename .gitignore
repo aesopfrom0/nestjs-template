@@ -35,5 +35,8 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # ENV FILES
-src/configs/env/*
-!src/configs/env/.example.env
+.env*
+!.env.example
+
+# dependencies
+pnpm-lock.yaml

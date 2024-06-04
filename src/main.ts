@@ -2,23 +2,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { LogLevel, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { TransformInterceptor } from '@project-name/shared/interceptors/transform-response.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log', 'debug'],
+  });
 
   const configService = app.get(ConfigService);
   const env = configService.get('environment');
+
   const corsOption: CorsOptions = {};
-  const logLevel = ['log', 'error', 'warn'] as LogLevel[];
   if (env === 'prod') {
     corsOption.origin = configService.get('allowedCorsOrigin');
-    app.useLogger(logLevel);
   } else {
     corsOption.origin = '*';
-    app.useLogger(logLevel.concat('debug'));
   }
   app.enableCors(corsOption);
 

@@ -1,5 +1,5 @@
-import { CustomLogger } from './providers/logger/custom-logger';
+import { Logger } from '@nestjs/common';
 
 export class BaseService {
-  protected readonly logger = new CustomLogger(this.constructor.name);
+  protected readonly logger = new Logger(this.constructor.name);
 }
