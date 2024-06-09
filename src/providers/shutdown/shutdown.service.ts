@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OnApplicationShutdown } from '@nestjs/common';
-import { BaseService } from '@project-name/base.service';
+import { BaseService } from '@/base.service';
 
 @Injectable()
 export class ShutdownService extends BaseService implements OnApplicationShutdown {

@@ -1,5 +1,5 @@
 import { NestInterceptor, ExecutionContext, CallHandler, Injectable } from '@nestjs/common';
-import { CommonResponseDto } from '@project-name/shared/dtos/response/common-response.dto';
+import { CommonResponseDto } from '@/shared/dtos/response/common-response.dto';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

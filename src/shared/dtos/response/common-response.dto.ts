@@ -1,4 +1,4 @@
-import { ErrorCode } from '@project-name/shared/exceptions/error-code';
+import { ErrorCode } from '@/shared/exceptions/error-code';
 
 export class CommonResponseDto<T> {
   body: T;
