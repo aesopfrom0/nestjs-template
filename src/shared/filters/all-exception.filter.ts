@@ -28,7 +28,6 @@ export class AllExceptionsFilter<T> extends BaseExceptionFilter implements Excep
 
     if (exception instanceof BadRequestException) {
       const response = (exception as any).getResponse();
-      console.log(response.message);
       message = response['message'] || message;
       Array.isArray(response.message) && (message = response.message[0]);
       errorCode = ErrorCode.BAD_REQUEST_ERROR;
