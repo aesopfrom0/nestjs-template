@@ -40,3 +40,4 @@ lerna-debug.log*
 
 # dependencies
 pnpm-lock.yaml
+package-lock.json

@@ -12,11 +12,11 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
-  const env = configService.get('environment');
+  const env = configService.get('app.environment');
 
   const corsOption: CorsOptions = {};
   if (env === 'prod') {
-    corsOption.origin = configService.get('allowedCorsOrigin');
+    corsOption.origin = configService.get('app.allowedCorsOrigin');
   } else {
     corsOption.origin = '*';
   }
@@ -44,7 +44,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(version, app, document);
 
-  const port = configService.get('port');
+  const port = configService.get('app.port');
   await app.listen(port, () => {
     console.log(`${env} server listening on ${port}`);
   });
