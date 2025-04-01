@@ -2,18 +2,16 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { validateSchema } from './configs/validate-schema';
-import { DatabaseModule } from './providers/database/database.module';
-import configuration from './configs/configuration';
-import TrackRequestMiddleware from './providers/middlewares/track-request-middleware.middleware';
-import { ShutdownModule } from './providers/shutdown/shutdown.module';
-import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from '@/shared/filters/all-exception.filter';
+import { validateSchema } from './config/validate-schema';
+import { DatabaseModule } from './provider/database/database.module';
+import configuration from './config/configuration';
+import TrackRequestMiddleware from './provider/middlewares/track-request-middleware.middleware';
+import { ShutdownModule } from './provider/shutdown/shutdown.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`${__dirname}/configs/env/.env.${process.env.NODE_ENV}`],
+      // envFilePath: [`.env.${process.env.NODE_ENV}`],
       load: [configuration],
       validationSchema: validateSchema(),
       validationOptions: {
@@ -24,13 +22,7 @@ import { AllExceptionsFilter } from '@/shared/filters/all-exception.filter';
     ShutdownModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionsFilter,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
